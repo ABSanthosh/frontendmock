@@ -18,15 +18,15 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // fetch("https://nnbphj.deta.dev/get", requestOptions)
-    //   .then((response) => response.text())
-    //   .then((result) => {
-    //     setData(JSON.parse(result)["allItems"]);
-    //     console.log(JSON.parse(JSON.parse(result)["allItems"][0].Responses));
-    //   })
-    //   .catch((error) => console.log("error", error));
+    fetch("https://nnbphj.deta.dev/get", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        setData(JSON.parse(result)["allItems"]);
+        console.log(JSON.parse(JSON.parse(result)["allItems"][0].Responses));
+      })
+      .catch((error) => console.log("error", error));
 
-    sendWebhookMessage();
+    // sendWebhookMessage();
   }, []);
 
   return (
