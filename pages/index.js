@@ -37,13 +37,19 @@ export default function Home() {
   // }, []);
 
   useEffect(() => {
-    const timer = setInterval(fetchScore, 5000);
+    const timer = setInterval(fetchScore, 9000);
     return () => clearInterval(timer);
   }, []);
 
   return (
     <div className="HomeWrapper">
       <h1>LeaderBoard</h1>
+      <h5>
+        <i>
+          {`The results are shown with a 8 sec interval. If you want current
+          score, press "Fetch Data"`}
+        </i>
+      </h5>
       <button
         onClick={() => {
           fetchScore();
