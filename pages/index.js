@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useState, useEffect } from "react";
-import sendWebhookMessage from "../utils/SendWebhook";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 
 export default function Home() {
   const [data, setData] = useState([]);
@@ -10,6 +10,7 @@ export default function Home() {
   var myHeaders = new Headers();
   myHeaders.append("X-API-Key", "J58PETue.wUPK28VtZCNnCCVxbtoFM7-UrvAANSTQb");
   myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Access-Control-Allow-Origin", "*");
 
   var requestOptions = {
     method: "GET",
@@ -17,21 +18,39 @@ export default function Home() {
     redirect: "follow",
   };
 
-  useEffect(() => {
-    fetch("https://nnbphj.deta.dev/get", requestOptions)
+  const fetchScore = () => {
+    fetch(`https://nnbphj.deta.dev/get`, requestOptions)
       .then((response) => response.text())
-      .then((result) => {
-        setData(JSON.parse(result)["allItems"]);
-        console.log(JSON.parse(JSON.parse(result)["allItems"][0].Responses));
-      })
-      .catch((error) => console.log("error", error));
+      .then((result) => setData(JSON.parse(result)["allItems"]))
+      .catch((err) => console.log(err));
+  };
 
-    // sendWebhookMessage();
+  // useEffect(() => {
+  //   fetch("https://nnbphj.deta.dev/get", requestOptions)
+  // .then((response) => response.text())
+  //     .then((result) => {
+  //       setData(JSON.parse(result)["allItems"]);
+  //       console.log(JSON.parse(JSON.parse(result)["allItems"][0].Responses));
+  //     })
+  //     .catch((error) => console.log("error", error));
+
+  // }, []);
+
+  useEffect(() => {
+    const timer = setInterval(fetchScore, 5000);
+    return () => clearInterval(timer);
   }, []);
 
   return (
     <div className="HomeWrapper">
       <h1>LeaderBoard</h1>
+      <button
+        onClick={() => {
+          fetchScore();
+        }}
+      >
+        Fetch Data
+      </button>
       <table>
         <thead>
           <tr>
